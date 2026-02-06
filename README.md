@@ -2,11 +2,11 @@
     <h1> <img src="assets/marble.jpg" height=40 align="texttop">MARBLE</h1>
 </div>
 
-
 **M**ulti-**A**gent Coo**R**dination **B**ackbone with **L**LM **E**ngine
 
-
 **MultiAgentBench** is a modular and extensible framework designed to facilitate the development, testing, and evaluation of multi-agent systems leveraging Large Language Models (LLMs). It provides a structured environment where agents can interact within various simulated environments, utilizing cognitive abilities and communication mechanisms to perform tasks collaboratively or competitively.
+
+> ⚠️ **Note:** This is a maintained version of the original MARBLE repository with bug fixes and minor improvements. The core functionality remains unchanged from the original project.
 
 <div style="display: flex; justify-content: center;">
   <div style="width: 100; transform: scale(1.0);">
@@ -51,9 +51,7 @@
   </div>
 </div>
 
-
 ---
-
 
 ### Install from scratch
 
@@ -67,14 +65,19 @@ export PATH="$HOME/.local/bin:$PATH"
 ```
 
 ### Configure environment variables
+
 Environment variables such as `OPENAI_API_KEY` and `Together_API_KEY` related configs are required to run the code. The recommended way to set all the required variable is
+
 1. Copy the `.env.template` file into the project root with the name `.env`.
+
 ```bash
 cp .env.template .env
 ```
+
 2. Fill the required environment variables in the `.env` file.
 
 ### Running the examples
+
 To run examples provided in the `examples`:
 
 ```bash
@@ -97,7 +100,9 @@ Run `poetry run pytest` to make sure all tests pass (this will ensure dynamic ty
 Check the github action result to make sure all tests pass. If not, fix the errors and push again.
 
 ## Citation
+
 Please cite the following paper if you find Marble helpful!
+
 ```bibtex
 @misc{zhu2025multiagentbenchevaluatingcollaborationcompetition,
       title={MultiAgentBench: Evaluating the Collaboration and Competition of LLM agents},

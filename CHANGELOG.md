@@ -7,7 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Dependencies**: Added `ruamel-yaml = "^0.18.0"` to project dependencies in `pyproject.toml`
+
 ### Fixed
+- **Critical syntax error in evaluator** (marble/evaluator/evaluator.py:324): Fixed incorrect indentation in `parse_research_ratings()` method
+  - Corrected `except json.JSONDecodeError` block to align with `try` statement (was incorrectly nested inside `if` block)
+  - Moved `else` clause to properly pair with `if` statement inside try block
+  - This was a Python `SyntaxError` that prevented the module from being imported at all
+
 - **Werewolf Unix/Linux compatibility** (f060bab): Fixed Windows-style paths (backslashes) to Unix-style paths (forward slashes) in werewolf scripts and config files
   - Updated `scripts/werewolf/run_simulation.sh` to use forward slashes and fixed corrupted command
   - Updated `scripts/werewolf/run_evaluation.sh` to use forward slashes
