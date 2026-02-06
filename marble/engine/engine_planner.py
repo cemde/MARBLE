@@ -59,10 +59,7 @@ def json_parse(input_str: str) -> Dict[str, Any]:
             # Fallback: use the entire string as JSON
             json_str = input_str
 
-    try:
-        data = json.loads(json_str)
-    except json.JSONDecodeError as e:
-        raise ValueError("JSON parsing failed. Please check the input format.") from e
+    data = json.loads(json_str)
 
     return data
 
