@@ -717,7 +717,7 @@ class Engine:
                 task = plan
                 chain_length += 1
                 self.planner.update_progress(result)
-                iteration_data["communications"] = communication
+                iteration_data["communications"] = [communication] if communication else []
 
                 # Evaluate communication
                 if iteration_data["communications"]:
@@ -853,7 +853,7 @@ class Engine:
                     f"Iteration {self.current_iteration} Summary:\n{summary}"
                 )
                 self.planner.update_progress(summary)
-                iteration_data["communications"] = communication
+                iteration_data["communications"] = [communication] if communication else []
                 iteration_data["task_assignments"] = tasks
                 iteration_data["task_results"] = results
                 # Evaluate communication
