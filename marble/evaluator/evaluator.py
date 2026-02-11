@@ -38,7 +38,7 @@ class Evaluator:
             "agent_kpis": {},
             "code_quality": {}
         }
-        with open('evaluator/evaluator_prompts.json', 'r', encoding='utf-8') as f:
+        with open(os.path.join(os.path.dirname(__file__), 'evaluator_prompts.json'), 'r', encoding='utf-8') as f:
             self.evaluation_prompts = json.load(f)
 
         evaluate_llm_config = self.metrics_config.get('evaluate_llm', {})
@@ -511,7 +511,7 @@ class Evaluator:
         Evaluate the code quality based on stricter criteria.
         """
         try:
-            config_path = "marble/configs/coding_config/coding_config.yaml"
+            config_path = os.path.join(os.path.dirname(__file__), "..", "configs", "coding_config", "coding_config.yaml")
             if not os.path.exists(config_path):
                 self.logger.error("Config file not found")
                 return

@@ -56,7 +56,7 @@ def give_advice_and_revise_handler(
                 "error-msg": "Solution file is empty or contains invalid code. Please use create_solution first to generate valid code",
             }
 
-        config_path = "marble/configs/coding_config/coding_config.yaml"
+        config_path = os.path.join(os.path.dirname(__file__), "..", "..", "configs", "coding_config", "coding_config.yaml")
         if not os.path.exists(config_path):
             return {
                 "success": False,

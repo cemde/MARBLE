@@ -294,6 +294,34 @@ class AgentGraph:
             }
         return profiles
 
+    def get_agent_profiles_linked(self, agent_id: str) -> Dict[str, Dict[str, Any]]:
+        """
+        Get profiles of agents that are linked to the specified agent via relationships.
+
+        Args:
+            agent_id (str): The ID of the agent whose linked agents' profiles to retrieve.
+
+        Returns:
+            Dict[str, Dict[str, Any]]: A dictionary mapping linked agent IDs to their profiles.
+        """
+        linked_ids: set[str] = set()
+        for source, target, _ in self.relationships:
+            if source == agent_id:
+                linked_ids.add(target)
+            elif target == agent_id:
+                linked_ids.add(source)
+
+        profiles = {}
+        for lid in linked_ids:
+            if lid in self.agents:
+                agent = self.agents[lid]
+                profiles[lid] = {
+                    "agent_id": agent.agent_id,
+                    "relationships": agent.relationships,
+                    "profile": agent.get_profile()
+                }
+        return profiles
+
     def get_roots(self) -> List[BaseAgent]:
         """
         Get the root agents (agents with no parents).

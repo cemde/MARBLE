@@ -155,9 +155,9 @@ class Engine:
         agents = []
         llm = self.config.llm
         for agent_config in agent_configs:
-            agent_llm = agent_config.get(
+            agent_llm = llm if llm else agent_config.get(
                 "llm", llm
-            )  # use agent-specific LLM if provided
+            )  # top-level LLM takes precedence; fall back to agent-specific LLM
             agent_type = agent_config.get("type")
             agent = BaseAgent(
                 config=agent_config, env=self.environment, model=agent_llm
