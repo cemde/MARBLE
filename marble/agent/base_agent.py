@@ -142,9 +142,9 @@ class BaseAgent:
             for name in self.env.action_handler_descriptions
         ]
         available_agents: Dict[str, Any] = {}
-        assert (
-            self.agent_graph is not None
-        ), "Agent graph is not set. Please set the agent graph using the set_agent_graph method first."
+        assert self.agent_graph is not None, (
+            "Agent graph is not set. Please set the agent graph using the set_agent_graph method first."
+        )
         for agent_id_1, agent_id_2, relationship in self.agent_graph.relationships:
             if agent_id_1 != self.agent_id and agent_id_2 != self.agent_id:
                 continue
@@ -179,7 +179,7 @@ class BaseAgent:
                             "description": "The ID of the target agent to communicate with. Available agents:\n"
                             + "\n".join([f"- {desc}" for desc in agent_descriptions]),
                             "enum": list(
-                                self.relationships.keys()
+                                available_agents.keys()  # TODO Double check after authors respond to #241 but report.
                             ),  # Dynamically list available target agents
                         },
                         "message": {
@@ -416,9 +416,9 @@ class BaseAgent:
         )
         if not initial_communication["success"]:
             return initial_communication
-        assert (
-            self.agent_graph is not None
-        ), "Agent graph is not set. Please set the agent graph using the set_agent_graph method first."
+        assert self.agent_graph is not None, (
+            "Agent graph is not set. Please set the agent graph using the set_agent_graph method first."
+        )
         agents = [self.agent_graph.agents.get(target_agent_id), self]
         for t in range(turns):
             session_current_agent = agents[t % 2]
@@ -565,9 +565,9 @@ class BaseAgent:
         try:
             self.session_id = session_id
             linked_by_graph = False
-            assert (
-                self.agent_graph is not None
-            ), "Agent graph is not set. Please set the agent graph using the set_agent_graph method first."
+            assert self.agent_graph is not None, (
+                "Agent graph is not set. Please set the agent graph using the set_agent_graph method first."
+            )
             for a1_id, a2_id, rel in self.agent_graph.relationships:
                 if a1_id == self.agent_id or a2_id == self.agent_id:
                     linked_by_graph = True
