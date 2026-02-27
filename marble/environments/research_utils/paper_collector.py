@@ -457,7 +457,7 @@ def get_references(arxiv_id: str, max_retries: int = 5) -> List[Dict[str, Any]]:
 
 def get_paper_by_keyword(
     keyword: str, existing_arxiv_ids: Set[str], max_papers: int = 10
-) -> List[arxiv.Result]:
+) -> List[Paper]:
     query = f'all:"{keyword}" AND (cat:cs.AI OR cat:cs.LG)'
     search = arxiv.Search(
         query=query,
@@ -467,9 +467,18 @@ def get_paper_by_keyword(
     results = perform_arxiv_search(search)
 
     papers = []
-    for paper in results:
-        short_id = paper.get_short_id().split("v")[0]
+    for result in results:
+        short_id = result.get_short_id().split("v")[0]
         if short_id not in existing_arxiv_ids:
+            paper = Paper(
+                title=result.title,
+                abstract=result.summary.replace("\n", " "),
+                authors=[author.name for author in result.authors],
+                url=result.entry_id,
+                domain=result.primary_category,
+                timestamp=int(result.published.timestamp()),
+                arxiv_id=short_id,
+            )
             papers.append(paper)
             existing_arxiv_ids.add(short_id)
         if len(papers) >= max_papers:
@@ -477,7 +486,7 @@ def get_paper_by_keyword(
     return papers
 
 
-def get_paper_by_arxiv_id(arxiv_id: str) -> Optional[arxiv.Result]:
+def get_paper_by_arxiv_id(arxiv_id: str) -> Optional[Paper]:
     query = f"id:{arxiv_id}"
     search = arxiv.Search(
         query=query, max_results=1, sort_by=arxiv.SortCriterion.Relevance
@@ -485,11 +494,19 @@ def get_paper_by_arxiv_id(arxiv_id: str) -> Optional[arxiv.Result]:
     results = perform_arxiv_search(search)
     for result in results:
         if result.get_short_id().split("v")[0] == arxiv_id:
-            return result
+            return Paper(
+                title=result.title,
+                abstract=result.summary.replace("\n", " "),
+                authors=[author.name for author in result.authors],
+                url=result.entry_id,
+                domain=result.primary_category,
+                timestamp=int(result.published.timestamp()),
+                arxiv_id=arxiv_id,
+            )
     return None
 
 
-def get_paper_by_title(title: str) -> Optional[arxiv.Result]:
+def get_paper_by_title(title: str) -> Optional[Paper]:
     query = f'ti:"{title}"'
     search = arxiv.Search(
         query=query,
@@ -499,5 +516,13 @@ def get_paper_by_title(title: str) -> Optional[arxiv.Result]:
     results = perform_arxiv_search(search)
     for result in results:
         if result.title.lower() == title.lower():
-            return result
+            return Paper(
+                title=result.title,
+                abstract=result.summary.replace("\n", " "),
+                authors=[author.name for author in result.authors],
+                url=result.entry_id,
+                domain=result.primary_category,
+                timestamp=int(result.published.timestamp()),
+                arxiv_id=result.get_short_id().split("v")[0],
+            )
     return None
